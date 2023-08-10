@@ -1,22 +1,16 @@
-
-class GetData:
-    def __init__(self, path_to_file):
-        self.path_to_file = path_to_file
-    
-    def get_data(self):
-        with open(self.path_to_file) as data:
-            COUNT_LINES = sum(1 for line in data)
-
-            count = 0
-            times = []
-            days = []
+from get_data import GetData
+from Data_analysis import TranslateToHours
 
 
-            print(data.readline())
+
+p = GetData('test')
+
+res = p.get_data()
+anal_data = TranslateToHours(res).translate_from_hours()
 
 
-p = GetData('test.txt')
-p.get_data()
+print(anal_data)
+
 
 
 

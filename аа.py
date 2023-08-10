@@ -1,4 +1,3 @@
-from main import GetData
+el = ['1.20', '1.19']
 
-p = GetData('test.txt')
-p.get_data()
+print(sorted(el))
