@@ -6,6 +6,7 @@ class TranslateToHours:
         start_time = self.DataTime[0]
         final_time_list = []
         for el in start_time:
+
             hour, minute = str(el).split('.')
             final_time = round((int(hour)*60 + int(minute))/60, 2)
             final_time_list.append(final_time)
@@ -63,7 +64,3 @@ class DataAnalysisView:
             raise TypeError("Вы должны выбрать режим обработки данных!")
 
         return self.output_data
-
-
-
-print(DataAnalysisView([[0,2,3,4,5], ['1.08', '2.08', '3.08', '1.09', '2.09']], ['Standart', 'Zero', 'Month']).AnalyseView())
