@@ -10,7 +10,7 @@ class GetData:
 
         with open(self.path_to_file) as data2:
             COUNT = 0
-            while COUNT < COUNT_LINES:
+            while COUNT < COUNT_LINES :
                 COUNT += 1
                 TimeDay = data2.readline().split()
                 time, day = TimeDay[0], TimeDay[1]

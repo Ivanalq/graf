@@ -17,7 +17,7 @@ class TranslateToHours:
 class DataAnalesBack:
     def __init__(self, DataTime):
         self.datatime = DataTime
-        self.UNIQ_MONTHS = [key.split('.')[1] for key in self.datatime[1]]
+        self.UNIQ_MONTHS = [int(key.split('.')[1]) for key in self.datatime[1]]
         self.UNIQ_MONTHS = sorted(list(set(self.UNIQ_MONTHS)))
         self.AMOUNT_TIMES = [0] * len(self.UNIQ_MONTHS)
 
@@ -25,8 +25,9 @@ class DataAnalesBack:
         for month in self.UNIQ_MONTHS:
             Index_month = 0
             for day in self.datatime[1]:
-                if month in day:
-                    self.AMOUNT_TIMES[self.UNIQ_MONTHS.index(month)] += self.datatime[0][Index_month]
+                if str(month) in day.split('.')[1]:
+                    self.AMOUNT_TIMES[self.UNIQ_MONTHS.index(month)] += (self.datatime[0][Index_month])
+
                 Index_month += 1
         return [self.AMOUNT_TIMES, self.UNIQ_MONTHS]
 
@@ -34,7 +35,7 @@ class DataAnalesBack:
         for month in self.UNIQ_MONTHS:
             Index_month = 0
             for day in self.datatime[1]:
-                if month in day and self.datatime[0][Index_month] == 0:
+                if str(month) in day and self.datatime[0][Index_month] == 0:
                     self.AMOUNT_TIMES[self.UNIQ_MONTHS.index(month)] += 1
                 Index_month += 1
         return [self.AMOUNT_TIMES, self.UNIQ_MONTHS]
@@ -53,12 +54,14 @@ class DataAnalysisView:
             for mod in self.analysis_mode:
                 if mod == 'Month':
                     res_anal = DataAnalesBack(self.datatime).Month_analyse()
-                    self.output_data.append(res_anal)
+                    self.output_data.append({'Month mod':res_anal})
                 if mod == 'Zero':
                     res_anal = DataAnalesBack(self.datatime).zero_days_analuze()
-                    self.output_data.append(res_anal)
+                    self.output_data.append({'Zero mod':res_anal})
                 if mod == 'Standart':
-                    self.output_data.append(self.datatime)
+
+                    dete = [self.datatime[0], [el for el in range(1, len(self.datatime[1]))]]
+                    self.output_data.append({'Standart mod':dete})
 
         else:
             raise TypeError("Вы должны выбрать режим обработки данных!")

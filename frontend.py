@@ -1,20 +1,38 @@
 import dearpygui.dearpygui as dpg
-from math import sin
+from get_data import GetData
+from Data_analysis import TranslateToHours, DataAnalysisView
 
 dpg.create_context()
-dpg.create_viewport(title='Custom Title', width=600, height=300)
+dpg.create_viewport(title='Custom Title', width=800, height=900)
 
 
-i_b = []
-
+a = []
+count = 0
 def to_id(sender, app_data, user_data):
-    if user_data not in i_b:
-        i_b.append(user_data)
+
+    if user_data not in a:
+        a.append(user_data)
     else:
-        i_b.remove(user_data)
+        a.remove(user_data)
+    print(a)
 
 def confirm(sender, user_data):
-    print(i_b)
+    global count
+    p = GetData('test')
+    res = p.get_data()
+    anal_data = TranslateToHours(res).translate_from_hours()
+    beta_finish_data = DataAnalysisView(anal_data, a).AnalyseView()
+
+    for data in beta_finish_data:
+        print(data)
+        draw_stabdart_gratf(data, data.keys(), count)
+        count += 1
+
+
+
+
+
+
 
 
 with dpg.window(label='Group Buttns'):
@@ -25,23 +43,22 @@ with dpg.window(label='Group Buttns'):
     dpg.add_button(label='start', callback=confirm)
 
 
-sindatax = [1.08, 2,3,4,5,6,7]
-sindatay = [12,32,34,234,234,234,33]
 
 
-with dpg.window(label="Tutorial"):
-    # create plot
-    with dpg.plot(label="Line Series", height=400, width=400):
-        # optionally create legend
-        dpg.add_plot_legend()
 
-        # REQUIRED: create x and y axes
-        dpg.add_plot_axis(dpg.mvXAxis, label="x")
-        dpg.add_plot_axis(dpg.mvYAxis, label="y", tag="y_axis")
+def draw_stabdart_gratf(arr, name, count):
+    sindatax, sindatay = list(arr.values())[0][1], list(arr.values())[0][0]
+    print(sindatay)
+    with dpg.window(label="Tutorial"):
+        # create plot
+        with dpg.plot(label="Line Series", height=700, width=800, tracked=True):
 
-        # series belong to a y axis
-        dpg.add_line_series(sindatax, sindatay,parent="y_axis")
+            dpg.add_plot_legend()
 
+            dpg.add_plot_axis(dpg.mvDatePickerLevel_Day, label="x")
+            dpg.add_plot_axis(dpg.mvYAxis, label="y", tag=str(count))
+            print(dpg)
+            dpg.add_line_series(sindatax, sindatay, label=name, parent=str(count))
 
 
 
@@ -49,4 +66,3 @@ dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.start_dearpygui()
 dpg.destroy_context()
-
