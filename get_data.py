@@ -6,11 +6,11 @@ class GetData:
 
     def get_data(self):
         with open(self.path_to_file) as data:
-            COUNT_LINES = sum(1 for line in data)
+            COUNT_LINES = sum(1 for _ in data)
 
         with open(self.path_to_file) as data2:
             COUNT = 0
-            while COUNT < COUNT_LINES :
+            while COUNT < COUNT_LINES:
                 COUNT += 1
                 TimeDay = data2.readline().split()
                 time, day = TimeDay[0], TimeDay[1]

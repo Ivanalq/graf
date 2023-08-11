@@ -1,16 +1,20 @@
 class TranslateToHours:
-    def __init__(self, DataTime):
+    """
+    Класс, который должен преобразовать часы и минуты в формат обычного времени, то-беж из 60 ричной системы исчисления
+    в 100 ричниую.
+    """
+    def __init__(self, DataTime):  # Получает на вход дату и время, и добавляет их в локальный экземпляр класса.
         self.DataTime = DataTime
 
-    def translate_from_hours(self):
-        start_time = self.DataTime[0]
-        final_time_list = []
-        for el in start_time:
-
-            hour, minute = str(el).split('.')
-            final_time = round((int(hour)*60 + int(minute))/60, 2)
-            final_time_list.append(final_time)
-        self.DataTime = [final_time_list, self.DataTime[1]]
+    def translate_from_hours(self):  # Функция, которая переводит часы в правильный формат.
+        start_hour = self.DataTime[0]  # Получает всё время.
+        final_hours = []
+        for item in start_hour:  # Перебирает все время, и потом делит его на минуты и часы.
+            hour, minute = str(item).split('.')
+            final_hour = (int(hour)*60 + int(minute))/60  # Получаем финальное время.
+            final_hour = round(final_hour, 2)  # Округляем его до двух знаков после запятой.
+            final_hours.append(final_hour)
+        self.DataTime = [final_hours, self.DataTime[1]]  # Обновляет параметр DataTime.
         return self.DataTime
 
 
@@ -41,8 +45,6 @@ class DataAnalesBack:
         return [self.AMOUNT_TIMES, self.UNIQ_MONTHS]
 
 
-
-
 class DataAnalysisView:
     def __init__(self, DataTime, Analysis_modes):
         self.datatime = DataTime
@@ -53,17 +55,15 @@ class DataAnalysisView:
         if len(self.analysis_mode) > 0:
             for mod in self.analysis_mode:
                 if mod == 'Month':
-                    res_anal = DataAnalesBack(self.datatime).Month_analyse()
-                    self.output_data.append({'Month mod':res_anal})
+                    result_analyse = DataAnalesBack(self.datatime).Month_analyse()
+                    self.output_data.append({'Month mod': result_analyse})
+
                 if mod == 'Zero':
-                    res_anal = DataAnalesBack(self.datatime).zero_days_analuze()
-                    self.output_data.append({'Zero mod':res_anal})
+                    result_analyse = DataAnalesBack(self.datatime).zero_days_analuze()
+                    self.output_data.append({'Zero mod': result_analyse})
+
                 if mod == 'Standart':
-
-                    dete = [self.datatime[0], [el for el in range(1, len(self.datatime[1]))]]
-                    self.output_data.append({'Standart mod':dete})
-
-        else:
-            raise TypeError("Вы должны выбрать режим обработки данных!")
+                    result_analyse = [self.datatime[0], [item for item in range(1, len(self.datatime[1]))]]
+                    self.output_data.append({'Standart mod': result_analyse})
 
         return self.output_data
